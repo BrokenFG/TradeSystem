@@ -32,7 +32,7 @@ public abstract class PluginDependencies {
     public static void enable() {
         for (PluginDependency external : EXTERNALS) {
             if (external.isAvailable()) {
-                if (external instanceof Listener) Bukkit.getPluginManager().registerEvents((Listener) external, TradeSystem.getInstance());
+                Bukkit.getPluginManager().registerEvents((Listener) external, TradeSystem.getInstance());
                 external.onEnable();
             }
         }
@@ -42,7 +42,7 @@ public abstract class PluginDependencies {
         for (PluginDependency external : EXTERNALS) {
             if (external.isAvailable()) {
                 external.onDisable();
-                if (external instanceof Listener) HandlerList.unregisterAll((Listener) external);
+                HandlerList.unregisterAll((Listener) external);
             }
         }
     }
