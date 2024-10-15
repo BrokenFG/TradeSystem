@@ -163,6 +163,12 @@
             <version>2.1.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>ru.brfg</groupId>
+            <artifactId>base</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- Both dependencies are required for MMOItems -->
         <dependency>

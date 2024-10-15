@@ -2,6 +2,7 @@ package de.codingair.tradesystem.spigot.extras.external;
 
 import de.codingair.tradesystem.spigot.TradeSystem;
 import de.codingair.tradesystem.spigot.extras.external.essentials.EssentialsDependency;
+import de.codingair.tradesystem.spigot.extras.external.fgvault.FGVaultDependency;
 import de.codingair.tradesystem.spigot.extras.external.griefdefender.GriefDefenderDependency;
 import de.codingair.tradesystem.spigot.extras.external.mmoitems.MMOItemsDependency;
 import de.codingair.tradesystem.spigot.extras.external.placeholderapi.PlaceholderDependency;
@@ -17,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 public abstract class PluginDependencies {
     private static final PluginDependency[] EXTERNALS = {
             new PlaceholderDependency(), new EssentialsDependency(), new TokenManagerDependency(), new VaultDependency(), new PlayerPointsDependency(), new GriefDefenderDependency(),
-            new MMOItemsDependency(), new WorldGuardDependency()
+            new MMOItemsDependency(), new WorldGuardDependency(), new FGVaultDependency()
     };
 
     public static boolean isEnabled(@NotNull Class<? extends PluginDependency> clazz) {
