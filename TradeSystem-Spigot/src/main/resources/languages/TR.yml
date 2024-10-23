@@ -30,6 +30,8 @@ Coin: Para
 Coins: Para
 PlayerPoint: "PlayerPoint"
 PlayerPoints: "PlayerPoints"
+FGToken: "FGToken"
+FGTokens: "FGTokens"
 Token: "Token"
 Tokens: "Tokens"
 ClaimBlock: "ClaimBlock"

@@ -30,6 +30,8 @@ Coin: Монета
 Coins: Монет(-и/-а)
 PlayerPoint: "PlayerPoint"
 PlayerPoints: "PlayerPoints"
+FGToken: "FGToken"
+FGTokens: "FGTokens"
 Token: "Token"
 Tokens: "Tokens"
 ClaimBlock: "ClaimBlock"

@@ -30,6 +30,8 @@ Coin: 金币
 Coins: 金币
 PlayerPoint: PlayerPoint
 PlayerPoints: PlayerPoints
+FGToken: "FGToken"
+FGTokens: "FGTokens"
 Token: "Token"
 Tokens: "Tokens"
 ClaimBlock: "ClaimBlock"

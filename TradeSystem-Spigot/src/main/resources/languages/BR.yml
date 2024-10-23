@@ -30,6 +30,8 @@ Coin: Moeda
 Coins: Moedas
 PlayerPoint: PlayerPoint
 PlayerPoints: PlayerPoints
+FGToken: "FGToken"
+FGTokens: "FGTokens"
 Token: "Token"
 Tokens: "Tokens"
 ClaimBlock: "ClaimBlock"

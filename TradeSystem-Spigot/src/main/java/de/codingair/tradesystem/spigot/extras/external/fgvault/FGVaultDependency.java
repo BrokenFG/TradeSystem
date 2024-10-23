@@ -18,8 +18,8 @@ public class FGVaultDependency implements PluginDependency, Listener {
     @EventHandler
     public void onIconInitialize(TradeIconInitializeEvent e) {
         try {
-            e.registerIcon(TradeSystem.getInstance(), TokenIcon.class, new EditorInfo("FGVault icon", Type.ECONOMY, (editor) -> new ItemBuilder(XMaterial.TRIPWIRE_HOOK), false, getPluginName()));
-            e.registerIcon(TradeSystem.getInstance(), ShowTokenIcon.class, new TransitionTargetEditorInfo("FGVault preview icon", TokenIcon.class));
+            e.registerIcon(TradeSystem.getInstance(), FGTokensIcon.class, new EditorInfo("FGVault icon", Type.ECONOMY, (editor) -> new ItemBuilder(XMaterial.TRIPWIRE_HOOK), false, getPluginName()));
+            e.registerIcon(TradeSystem.getInstance(), ShowFGTokensIcon.class, new TransitionTargetEditorInfo("FGVault preview icon", FGTokensIcon.class));
         } catch (TradeIconException ex) {
             throw new RuntimeException(ex);
         }

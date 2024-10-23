@@ -12,14 +12,15 @@ import ru.brfg.base.manager.PlayerManager;
 
 import java.math.BigDecimal;
 
-public class TokenIcon extends EconomyIcon<ShowTokenIcon> {
-    public TokenIcon(@NotNull ItemStack itemStack) {
-        super(itemStack, "Token", "Tokens", false);
+public class FGTokensIcon extends EconomyIcon<ShowFGTokensIcon> {
+
+    public FGTokensIcon(@NotNull ItemStack itemStack) {
+        super(itemStack, "FGToken", "FGTokens", false);
     }
 
     @Override
-    public Class<ShowTokenIcon> getTargetClass() {
-        return ShowTokenIcon.class;
+    public Class<ShowFGTokensIcon> getTargetClass() {
+        return ShowFGTokensIcon.class;
     }
 
     private @NotNull PlayerManager getPlayerManager() {
