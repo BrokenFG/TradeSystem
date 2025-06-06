@@ -9,6 +9,7 @@ import de.codingair.codingapi.player.gui.inventory.v2.exceptions.NoPageException
 import de.codingair.tradesystem.spigot.TradeSystem;
 import de.codingair.tradesystem.spigot.trade.gui.TradingGUI;
 import de.codingair.tradesystem.spigot.trade.gui.layout.utils.Perspective;
+import de.codingair.tradesystem.spigot.utils.CompatibilityUtilPlayer;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -126,7 +127,7 @@ public class BukkitTrade extends Trade {
         PlayerInventory inventory = new PlayerInventory(players[perspective.id()], true);
 
         if (inventory.getPlayer() != null) {
-            ItemStack item = inventory.getPlayer().getOpenInventory().getCursor();
+            ItemStack item = CompatibilityUtilPlayer.getCursor(inventory.getPlayer());
             if (item != null && item.getType() != Material.AIR) inventory.addItem(item);
         }
 

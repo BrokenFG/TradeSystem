@@ -1,5 +1,6 @@
 package de.codingair.tradesystem.spigot.trade;
 
+import com.github.Anon8281.universalScheduler.UniversalScheduler;
 import de.codingair.codingapi.API;
 import de.codingair.codingapi.player.gui.anvil.AnvilGUI;
 import de.codingair.codingapi.player.gui.inventory.PlayerInventory;
@@ -13,6 +14,7 @@ import de.codingair.tradesystem.spigot.trade.gui.TradingGUI;
 import de.codingair.tradesystem.spigot.trade.gui.layout.types.TradeIcon;
 import de.codingair.tradesystem.spigot.trade.gui.layout.utils.Perspective;
 import de.codingair.tradesystem.spigot.transfer.utils.ItemStackUtils;
+import de.codingair.tradesystem.spigot.utils.CompatibilityUtilPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -212,7 +214,8 @@ public class ProxyTrade extends Trade {
         // use other name for packet since we have to send them the packet
         TradeSystem.proxyHandler().send(new TradeInitializedPacket(other), player);
 
-        Bukkit.getScheduler().runTaskLater(TradeSystem.getInstance(), () -> {
+        UniversalScheduler.getScheduler(TradeSystem.getInstance()).runTaskLater(
+        () -> {
             // cancel trade if other player is not ready
             packetInitialization.completeExceptionally(new IllegalStateException("Other player did not respond."));
         }, 20L);
@@ -314,7 +317,7 @@ public class ProxyTrade extends Trade {
             PlayerInventory inventory = new PlayerInventory(this.player, false);
 
             if (inventory.getPlayer() != null) {
-                ItemStack item = inventory.getPlayer().getOpenInventory().getCursor();
+                ItemStack item = CompatibilityUtilPlayer.getCursor(inventory.getPlayer());
                 if (item != null && item.getType() != Material.AIR) inventory.addItem(item);
             }
 

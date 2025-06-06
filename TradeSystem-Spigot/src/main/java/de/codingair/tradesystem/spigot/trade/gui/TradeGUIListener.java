@@ -1,5 +1,6 @@
 package de.codingair.tradesystem.spigot.trade.gui;
 
+import com.github.Anon8281.universalScheduler.UniversalScheduler;
 import de.codingair.codingapi.player.gui.inventory.v2.exceptions.AlreadyOpenedException;
 import de.codingair.codingapi.player.gui.inventory.v2.exceptions.IsWaitingException;
 import de.codingair.codingapi.player.gui.inventory.v2.exceptions.NoPageException;
@@ -8,8 +9,8 @@ import de.codingair.tradesystem.spigot.TradeSystem;
 import de.codingair.tradesystem.spigot.trade.Trade;
 import de.codingair.tradesystem.spigot.trade.gui.layout.shulker.ShulkerPeekGUI;
 import de.codingair.tradesystem.spigot.trade.gui.layout.utils.Perspective;
+import de.codingair.tradesystem.spigot.utils.CompatibilityUtilEvent;
 import de.codingair.tradesystem.spigot.utils.Lang;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -77,7 +78,44 @@ public class TradeGUIListener implements Listener {
         }
     }
 
-    //use higher priority than the GUI listener
+    // Use the lowest priority to mark this inventory click event as canceled for other plugins if the user tries to
+    // interact with a forbidden slot.
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onForbiddenClick(InventoryClickEvent e) {
+        if (e.getWhoClicked() instanceof Player) {
+            Player player = (Player) e.getWhoClicked();
+            Trade trade = TradeSystem.handler().getTrade(player);
+
+            if (trade != null && trade.inMainGUI(player)) {
+                Perspective perspective = trade.getPerspective(player);
+
+                boolean topInventory = CompatibilityUtilEvent.getTopInventory(e).equals(e.getClickedInventory());
+                boolean ownSlots = getConfiguration(player, trade, perspective).isTargetSlot(e);
+                boolean forbidden = topInventory && !ownSlots;
+                if (forbidden) e.setCancelled(true);
+            }
+        }
+    }
+
+    // Use the lowest priority to mark this inventory click event as canceled for other plugins if the user tries to
+    // interact with a forbidden slot.
+    @EventHandler
+    public void onShulkerBoxClick(InventoryClickEvent e) {
+        if (e.getWhoClicked() instanceof Player) {
+            Player player = (Player) e.getWhoClicked();
+            Trade trade = TradeSystem.handler().getTrade(player);
+
+            if (trade != null && trade.inMainGUI(player)) {
+                // check shulker box first because this event might already be cancelled
+                Perspective perspective = trade.getPerspective(player);
+                if (checkForShulkerBoxes(e, trade, player, perspective)) {
+                    e.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    // use higher priority than the GUI listener
     @EventHandler(priority = EventPriority.HIGH)
     public void onClick(InventoryClickEvent e) {
         if (e.getWhoClicked() instanceof Player) {
@@ -91,10 +129,8 @@ public class TradeGUIListener implements Listener {
                 // cancel everything and project changes later
                 e.setCancelled(true);
 
-                Perspective perspective = trade.getPerspective(player);
-                if (checkForShulkerBoxes(e, trade, player, perspective)) return;
-
                 // project click event on trading GUI directly to allow modifications in another listener
+                Perspective perspective = trade.getPerspective(player);
                 boolean offerChange = Actions.projectResult(e, getConfiguration(player, trade, perspective));
                 handleResult(offerChange, trade, perspective);
             }
@@ -115,14 +151,14 @@ public class TradeGUIListener implements Listener {
         }
 
         // item overflow will be invoked by synchronization later
-        Bukkit.getScheduler().runTask(TradeSystem.getInstance(), () -> {
+        UniversalScheduler.getScheduler(TradeSystem.getInstance()).runTask(() -> {
             // update own inventory later
             trade.synchronizePlayerInventory(perspective);
         });
     }
 
     private boolean checkForShulkerBoxes(@NotNull InventoryClickEvent event, @NotNull Trade trade, @NotNull Player player, @NotNull Perspective perspective) {
-        boolean topInventory = event.getView().getTopInventory().equals(event.getClickedInventory());
+        boolean topInventory = CompatibilityUtilEvent.getTopInventory(event).equals(event.getClickedInventory());
         if (topInventory) {
             boolean ownSlots = trade.getSlots().contains(event.getSlot());
             if (ownSlots) {

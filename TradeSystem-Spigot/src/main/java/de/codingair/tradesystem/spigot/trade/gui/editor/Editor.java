@@ -1,5 +1,6 @@
 package de.codingair.tradesystem.spigot.trade.gui.editor;
 
+import com.github.Anon8281.universalScheduler.UniversalScheduler;
 import de.codingair.codingapi.player.gui.inventory.v2.GUI;
 import de.codingair.codingapi.player.gui.inventory.v2.Page;
 import de.codingair.codingapi.player.gui.inventory.v2.exceptions.AlreadyOpenedException;
@@ -19,6 +20,7 @@ import de.codingair.tradesystem.spigot.trade.gui.layout.types.impl.basic.Decorat
 import de.codingair.tradesystem.spigot.trade.gui.layout.types.impl.basic.TradeSlot;
 import de.codingair.tradesystem.spigot.trade.gui.layout.types.impl.basic.TradeSlotOther;
 import de.codingair.tradesystem.spigot.trade.gui.layout.utils.IconData;
+import de.codingair.tradesystem.spigot.utils.CompatibilityUtilEvent;
 import de.codingair.tradesystem.spigot.utils.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -38,6 +40,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -223,7 +226,8 @@ public class Editor extends GUI {
                     layoutInventory.setItem(i, buildSlotCursor(icon, 1));
                 } else if (item != null) {
                     //add marker
-                    item.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 1);
+                    //noinspection deprecation
+                    item.addUnsafeEnchantment(Enchantment.values()[0], 1);
 
                     ItemMeta meta = item.getItemMeta();
                     assert meta != null;
@@ -268,8 +272,7 @@ public class Editor extends GUI {
         }
 
         builder.setAmount(amount);
-        builder.addEnchantment(Enchantment.DAMAGE_ALL, 1);
-        builder.setHideEnchantments(true);
+        builder.addEnchantmentEffect();
 
         EditorInfo info = IconHandler.getInfo(icon);
         builder.setName("§c" + info.getName());
@@ -364,7 +367,7 @@ public class Editor extends GUI {
                 if (isSlotIcon()) {
                     assert setting != null;
                     int amount = 26 - countIcon(setting);
-                    Bukkit.getScheduler().runTaskLater(TradeSystem.getInstance(), () -> e.getView().setCursor(buildSlotCursor(setting, amount)), 1);
+                    UniversalScheduler.getScheduler(TradeSystem.getInstance()).runTaskLater(() -> CompatibilityUtilEvent.setCursor(e,buildSlotCursor(setting, amount)), 1);
                 }
 
                 open = true;
@@ -401,7 +404,7 @@ public class Editor extends GUI {
                     if (callback != null) {
                         e.setCancelled(true);
 
-                        if (e.getView().getTopInventory().equals(e.getClickedInventory()) && e.getCurrentItem() != null) {
+                        if (CompatibilityUtilEvent.getTopInventory(e).equals(e.getClickedInventory()) && e.getCurrentItem() != null) {
                             Class<? extends TradeIcon> icon = icons.get(e.getSlot());
                             //trade slots don't contain any items
                             if (icon != null && TradeSlot.class.isAssignableFrom(icon)) return;
@@ -424,7 +427,7 @@ public class Editor extends GUI {
                         }
                     } else {
                         //setting trade slots
-                        if (!e.getView().getTopInventory().equals(e.getClickedInventory())) e.setCancelled(true);
+                        if (!CompatibilityUtilEvent.getTopInventory(e).equals(e.getClickedInventory())) e.setCancelled(true);
                         else {
                             Class<? extends TradeIcon> current = icons.get(e.getSlot());
                             if (current != null && !setting.equals(current)) {
@@ -437,7 +440,7 @@ public class Editor extends GUI {
                     }
                 } else {
                     Class<? extends TradeIcon> icon;
-                    if (e.getView().getTopInventory().equals(e.getClickedInventory()) && e.getCurrentItem() != null && (icon = icons.remove(e.getSlot())) != null) {
+                    if (CompatibilityUtilEvent.getTopInventory(e).equals(e.getClickedInventory()) && e.getCurrentItem() != null && (icon = icons.remove(e.getSlot())) != null) {
                         //remove marker
                         cleanItem(e.getSlot(), icon);
                     }
@@ -467,7 +470,13 @@ public class Editor extends GUI {
             private void closing(InventoryView view) {
                 if (isSlotIcon()) {
                     ItemStack cursor = buildSlotCursor(setting, 1);
-                    view.setCursor(null);
+
+                    try {
+                        Method setCursorMethod = InventoryView.class.getDeclaredMethod("setCursor", ItemStack.class);
+                        setCursorMethod.invoke(view, (Object) null);
+                    } catch (NoSuchMethodException | IllegalAccessException | java.lang.reflect.InvocationTargetException e) {
+                        throw new RuntimeException("Failed to set cursor in InventoryView", e);
+                    }
 
                     icons.entrySet().removeIf(e -> e.getValue().equals(setting) && layoutInventory.getItem(e.getKey()) == null);
                     for (int slot = 0; slot < layoutInventory.getContents().length; slot++) {

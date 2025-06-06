@@ -13,10 +13,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 1.8
+    - name: Set up JDK 21
       uses: actions/setup-java@v1
       with:
-        java-version: 1.8
+        java-version: 21
     - name: Build with Maven
       run: |
         mvn clean package
@@ -67,7 +67,7 @@ jobs:
     - name: Deploy
       run: |
         rank="<@&793495434235609138>"
-        milestone=47
+        milestone=48
         
         upload() {
             file=$(find "./TradeSystem-Bundle/target" -type f -name "TradeSystem_v*.jar" | head -n 1)

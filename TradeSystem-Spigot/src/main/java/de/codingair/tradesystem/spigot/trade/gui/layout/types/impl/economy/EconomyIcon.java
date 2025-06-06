@@ -171,7 +171,7 @@ public abstract class EconomyIcon<T extends Transition.Consumer<BigDecimal> & Tr
             layout.setName(Lang.get("Economy_Icon_Title_Target_" + namePlural).replace("%player%", player.getName()).replace("%amount%", makeString(trade, perspective, player, value, true)));
             layout.addLore(Lang.get("Economy_Icon_Lore_Target_" + namePlural).replace("%player%", player.getName()).replace("%amount%", makeString(trade, perspective, player, value, true)).split("\n"));
         }
-        if (value.signum() > 0) layout.addEnchantment(Enchantment.DAMAGE_ALL, 1).setHideEnchantments(true);
+        if (value.signum() > 0) layout.addEnchantmentEffect();
 
         return layout;
     }

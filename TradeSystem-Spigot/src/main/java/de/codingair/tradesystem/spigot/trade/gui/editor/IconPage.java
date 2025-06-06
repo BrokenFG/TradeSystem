@@ -1,5 +1,6 @@
 package de.codingair.tradesystem.spigot.trade.gui.editor;
 
+import com.github.Anon8281.universalScheduler.UniversalScheduler;
 import de.codingair.codingapi.player.gui.inventory.v2.GUI;
 import de.codingair.codingapi.player.gui.inventory.v2.Page;
 import de.codingair.codingapi.player.gui.inventory.v2.buttons.Button;
@@ -120,10 +121,7 @@ public class IconPage extends Page {
                     }
                 }
 
-                if (addMarker) {
-                    builder.addEnchantment(Enchantment.DAMAGE_ALL, 1);
-                    builder.setHideEnchantments(true);
-                }
+                if (addMarker) builder.addEnchantmentEffect();
 
                 builder.setName(Editor.ITEM_TITLE_COLOR + editorInfo.getName() + (done ? "§r §a✔" : ""));
                 builder.addLore("");
@@ -234,7 +232,8 @@ public class IconPage extends Page {
                             resetting = true;
                             updateItem(slot);
 
-                            Bukkit.getScheduler().runTaskLater(TradeSystem.getInstance(), () -> {
+                            UniversalScheduler.getScheduler(TradeSystem.getInstance()).runTaskLater(
+                            () -> {
                                 resetting = false;
                                 updateItem(slot);
                             }, 10L);
