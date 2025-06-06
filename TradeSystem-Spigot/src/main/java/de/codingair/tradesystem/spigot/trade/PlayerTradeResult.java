@@ -106,14 +106,11 @@ public class PlayerTradeResult extends TradeResult {
             if (diff.signum() == 0) continue;
             boolean receive = diff.signum() > 0;
 
-            boolean singular = diff.equals(BigDecimal.ONE);
             if (receive) {
-                Lang.P info = new Lang.P("object",
-                        icon.makeString(trade, perspective, player, diff, false) + " " + icon.getName(player, singular));
+                Lang.P info = new Lang.P("object", Lang.get("Economy_Icon_Title_Self_" + icon.getNamePlural()).replace("%amount%", icon.makeString(trade, perspective, player, diff, false)));
                 lines.add(Lang.get("Trade_Finish_Report_Receive", player, info));
             } else {
-                Lang.P info = new Lang.P("object",
-                        icon.makeString(trade, perspective, player, diff.negate(), true) + " " + icon.getName(player, singular));
+                Lang.P info = new Lang.P("object", Lang.get("Economy_Icon_Title_Self_" + icon.getNamePlural()).replace("%amount%", icon.makeString(trade, perspective, player, diff, false)));
                 lines.add(Lang.get("Trade_Finish_Report_Give", player, info));
             }
         }

@@ -15,7 +15,7 @@ public class ShulkerPeekGUI extends GUI {
     private final Perspective owner;
 
     public ShulkerPeekGUI(@NotNull Player player, @NotNull ItemStack item, @NotNull Perspective owner) {
-        super(player, TradeSystem.getInstance(), 36, Lang.get("Shulker_Box", player), true);
+        super(player, TradeSystem.getInstance(), 54, Lang.get("Shulker_Box", player), true);
         this.owner = owner;
 
         ShulkerBox box = getBoxFrom(item);
@@ -50,5 +50,17 @@ public class ShulkerPeekGUI extends GUI {
 
     public static boolean isShulkerBox(@Nullable ItemStack item) {
         return item != null && item.hasItemMeta() && item.getItemMeta() instanceof BlockStateMeta && ((BlockStateMeta) item.getItemMeta()).getBlockState() instanceof ShulkerBox;
+    }
+
+    public static boolean isShulkerBoxEmpty(ItemStack item) {
+        if (item.hasItemMeta() && item.getItemMeta() instanceof BlockStateMeta) {
+            BlockStateMeta b = (BlockStateMeta) item.getItemMeta();
+
+            if (b.getBlockState() instanceof ShulkerBox) {
+                return ((ShulkerBox) b.getBlockState()).getInventory().isEmpty();
+            }
+        }
+
+        return true;
     }
 }

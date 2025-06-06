@@ -2,7 +2,9 @@ No_Permissions: '&cНедостаточно прав!'
 Only_for_Player: '&cТолько для игроков!'
 No_Money: '&cУ Вас недостаточно денег!'
 Enter_Correct_Amount: '&cПожалуйста, введите корректное количество!'
-Only_X_Amount: '&7У вас есть только &c%amount% %type%&7!'
+Only_X_Amount_FGTokens: '&7У вас есть только &c%amount% токенов&7!'
+Only_X_Amount_Coins: '&7У вас есть только &c%amount% монет&7!'
+Only_X_Amount_Levels: '&7У вас есть только &c%amount% опыта&7!'
 Trade_Was_Cancelled: '&cСделка отменена..'
 Trade_Was_Finished: '&7Сделка &aсовершена&7.'
 Cannot_Trade_With_Yourself: '&cВы не можете проводить сделку с самим собой.'
@@ -32,6 +34,30 @@ PlayerPoint: "PlayerPoint"
 PlayerPoints: "PlayerPoints"
 FGToken: "FGToken"
 FGTokens: "FGTokens"
+Economy_Icon_Title_Self_FGTokens: "%player% %amount%"
+Economy_Icon_Title_Target_FGTokens: "%player% %amount%"
+Economy_Icon_Title_Self_Coins: "%player% %amount%"
+Economy_Icon_Title_Target_Coins: "%player% %amount%"
+Economy_Icon_Title_Self_Levels: "%player% %amount%"
+Economy_Icon_Title_Target_Levels: "%player% %amount%"
+Economy_Icon_Lore_Self_FGTokens: |-
+  %player% 
+  %amount%
+Economy_Icon_Lore_Target_FGTokens: |-
+  %player% 
+  %amount%
+Economy_Icon_Lore_Self_Coins: |-
+  %player% 
+  %amount%
+Economy_Icon_Lore_Target_Coins: |-
+  %player% 
+  %amount%
+Economy_Icon_Lore_Self_Levels: |-
+  %player% 
+  %amount%
+Economy_Icon_Lore_Target_Levels: |-
+  %player% 
+  %amount%
 Token: "Token"
 Tokens: "Tokens"
 ClaimBlock: "ClaimBlock"

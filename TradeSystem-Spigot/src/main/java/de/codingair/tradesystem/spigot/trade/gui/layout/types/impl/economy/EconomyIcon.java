@@ -48,6 +48,10 @@ public abstract class EconomyIcon<T extends Transition.Consumer<BigDecimal> & Tr
         this.decimal = decimal;
     }
 
+    public String getNamePlural() {
+        return namePlural;
+    }
+
     @Override
     public boolean isClickable(@NotNull Trade trade, @NotNull Perspective perspective, @NotNull Player viewer) {
         Player player = trade.getPlayer(perspective);
@@ -102,7 +106,7 @@ public abstract class EconomyIcon<T extends Transition.Consumer<BigDecimal> & Tr
 
         BigDecimal max = getBalance(player);
         if (input.compareTo(max) > 0) {
-            Lang.send(viewer, "Only_X_Amount", new Lang.P("amount", makeString(trade, perspective, viewer, max, true)), new Lang.P("type", getName(viewer, max.equals(BigDecimal.ONE))));
+            Lang.send(viewer, "Only_X_Amount_" + namePlural, new Lang.P("amount", makeString(trade, perspective, viewer, max, true)), new Lang.P("type", getName(viewer, max.equals(BigDecimal.ONE))));
             return IconResult.GUI;
         }
 
@@ -160,9 +164,13 @@ public abstract class EconomyIcon<T extends Transition.Consumer<BigDecimal> & Tr
         Player player = trade.getPlayer(perspective);
         if (player == null) throw new NullPointerException("Player with perspective " + perspective + " is null");
 
-        layout.setName("§e" + getName(player, false) + ": §7" + makeString(trade, perspective, player, value, true));
-
-        layout.addLore("", "§7» " + Lang.get("Click_To_Change", viewer));
+        if (perspective.isMain()) {
+            layout.setName(Lang.get("Economy_Icon_Title_Self_" + namePlural).replace("%player%", player.getName()).replace("%amount%", makeString(trade, perspective, player, value, true)));
+            layout.addLore(Lang.get("Economy_Icon_Lore_Self_" + namePlural).replace("%player%", player.getName()).replace("%amount%", makeString(trade, perspective, player, value, true)).split("\n"));
+        } else {
+            layout.setName(Lang.get("Economy_Icon_Title_Target_" + namePlural).replace("%player%", player.getName()).replace("%amount%", makeString(trade, perspective, player, value, true)));
+            layout.addLore(Lang.get("Economy_Icon_Lore_Target_" + namePlural).replace("%player%", player.getName()).replace("%amount%", makeString(trade, perspective, player, value, true)).split("\n"));
+        }
         if (value.signum() > 0) layout.addEnchantment(Enchantment.DAMAGE_ALL, 1).setHideEnchantments(true);
 
         return layout;

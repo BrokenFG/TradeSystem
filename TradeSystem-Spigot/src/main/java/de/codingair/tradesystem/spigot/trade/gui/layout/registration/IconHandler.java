@@ -3,6 +3,8 @@ package de.codingair.tradesystem.spigot.trade.gui.layout.registration;
 import de.codingair.codingapi.tools.items.ItemBuilder;
 import de.codingair.codingapi.tools.items.XMaterial;
 import de.codingair.tradesystem.spigot.TradeSystem;
+import de.codingair.tradesystem.spigot.extras.external.fgvault.FGTokensIcon;
+import de.codingair.tradesystem.spigot.extras.external.fgvault.ShowFGTokensIcon;
 import de.codingair.tradesystem.spigot.trade.gui.layout.registration.exceptions.*;
 import de.codingair.tradesystem.spigot.trade.gui.layout.types.MultiTradeIcon;
 import de.codingair.tradesystem.spigot.trade.gui.layout.types.TradeIcon;
@@ -145,6 +147,9 @@ public class IconHandler {
         try {
             //economy
             registerExp();
+            register(FGTokensIcon.class, new EditorInfo("FGVault icon", Type.ECONOMY, (editor) -> new ItemBuilder(XMaterial.TRIPWIRE_HOOK), false, "FGBase"));
+            register(ShowFGTokensIcon.class, new TransitionTargetEditorInfo("FGVault preview icon", FGTokensIcon.class));
+
         } catch (TradeIconException e) {
             e.printStackTrace();
         }

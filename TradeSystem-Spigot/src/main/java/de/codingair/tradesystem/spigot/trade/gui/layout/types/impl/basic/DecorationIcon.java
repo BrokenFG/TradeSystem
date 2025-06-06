@@ -8,6 +8,7 @@ import de.codingair.tradesystem.spigot.trade.gui.layout.utils.Perspective;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import ru.brfg.api.bukkit.utils.Common;
 
 public class DecorationIcon extends ShowIcon {
     public DecorationIcon(@NotNull ItemStack itemStack) {
@@ -30,6 +31,6 @@ public class DecorationIcon extends ShowIcon {
 
     @Override
     public @NotNull ItemBuilder prepareItemStack(@NotNull ItemBuilder layout, @NotNull Trade trade, @NotNull Perspective perspective, @NotNull Player viewer) {
-        return layout.setHideName(true);
+        return layout.setName(Common.colorize("&8&l[&r  &#fb9610&lM&#fb830e&lI&#fc710c&lN&#fc5e0a&lE&#fc4b08&lL&#fc3806&lA&#fd2604&lN&#fd1302&lD&#fd0000&lY&f&l.COM&r  &8&l]&r"));
     }
 }

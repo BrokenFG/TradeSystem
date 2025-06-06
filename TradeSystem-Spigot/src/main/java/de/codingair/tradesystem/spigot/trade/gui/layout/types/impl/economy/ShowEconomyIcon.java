@@ -25,7 +25,9 @@ public abstract class ShowEconomyIcon extends SimpleShowIcon<BigDecimal> impleme
 
     @Override
     public @NotNull ItemBuilder prepareItemStack(@NotNull ItemBuilder layout, @NotNull Trade trade, @NotNull Perspective perspective, @NotNull Player viewer) {
-        layout.setName("§e" + getName(viewer) + ": §7" + makeString(trade, perspective, viewer, value));
+        layout.setName(Lang.get("Economy_Icon_Title_Target_" + namePlural).replace("%player%", trade.getPlayer(Perspective.SECONDARY).getName()).replace("%amount%", makeString(trade, perspective, viewer, value)));
+        layout.addLore(Lang.get("Economy_Icon_Lore_Target_" + namePlural).replace("%player%", trade.getPlayer(Perspective.SECONDARY).getName()).replace("%amount%", makeString(trade, perspective, viewer, value)).split("\n"));
+
         if (value.signum() > 0) layout.addEnchantment(Enchantment.DAMAGE_ALL, 1).setHideEnchantments(true);
 
         return layout;
